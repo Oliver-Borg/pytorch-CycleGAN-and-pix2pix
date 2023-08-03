@@ -3,7 +3,7 @@
 #SBATCH --account=a100free
 #SBATCH --partition=a100
 #SBATCH --gres=gpu:a100-2g-10gb:1
-#SBATCH --ntasks=5
+#SBATCH --ntasks=4
 #SBATCH --time=48:00:00  # Time limit (HH:MM:SS)
 #SBATCH --output=slurm/pix2pix.out  # Output file
 #SBATCH --error=slurm/pix2pix.err  # Error file
