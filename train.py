@@ -33,7 +33,7 @@ if __name__ == '__main__':
     planet_cfg = PlanetConfig(planet_seed=0, use_mask_store=True, data_dir='./planetAI/data/')
     setup(planet_cfg)
     dataset = PlanetDataset(planet_cfg=planet_cfg, target_image_channels=opt.output_nc, 
-                            cond_image_channels=opt.input_nc, normalise=False, conditioning_dropout=0.1)
+                            cond_image_channels=opt.input_nc, normalise=True, conditioning_dropout=0.0)
     dataset = DataLoader(
                 dataset,
                 batch_size=opt.batch_size,
