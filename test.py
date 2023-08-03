@@ -32,6 +32,13 @@ from data import create_dataset
 from models import create_model
 from util.visualizer import save_images
 from util import html
+from planetAI.src.data.dataset import PlanetDataset
+from planetAI.src.data.utils import PlanetConfig
+from planetAI.src.data.dataclass_argparser import CustomArgumentParser
+from planetAI.src.data.map_paster import setup
+from torch.utils.data import DataLoader
+from models import create_model
+from tqdm import tqdm
 
 try:
     import wandb
@@ -47,7 +54,21 @@ if __name__ == '__main__':
     opt.serial_batches = True  # disable data shuffling; comment this line if results on randomly chosen images are needed.
     opt.no_flip = True    # no flip; comment this line if results on flipped images are needed.
     opt.display_id = -1   # no visdom display; the test code saves the results to a HTML file.
-    dataset = create_dataset(opt)  # create a dataset given opt.dataset_mode and other options
+    planet_kwargs = {}
+    all_kwargs = dict(opt._get_kwargs())
+    for k in all_kwargs:
+        if k in PlanetConfig.__dataclass_fields__:
+            planet_kwargs[k] = all_kwargs[k]
+    planet_cfg = PlanetConfig(**planet_kwargs)
+    setup(planet_cfg)
+    dataset = PlanetDataset(planet_cfg=planet_cfg, target_image_channels=opt.output_nc, 
+                            cond_image_channels=opt.input_nc, normalise=True, conditioning_dropout=0.0)
+    dataset = DataLoader(
+                dataset,
+                batch_size=opt.batch_size,
+                shuffle=not opt.serial_batches,
+                num_workers=int(opt.num_threads)
+            )  # create a dataset given opt.dataset_mode and other options
     model = create_model(opt)      # create a model given opt.model and other options
     model.setup(opt)               # regular setup: load and print networks; create schedulers
 

@@ -4,7 +4,7 @@ from util import util
 import torch
 import models
 import data
-
+from planetAI.src.data.utils import PlanetConfig
 
 class BaseOptions():
     """This class defines options used during both training and test time.
@@ -57,6 +57,11 @@ class BaseOptions():
         # wandb parameters
         parser.add_argument('--use_wandb', action='store_true', help='if specified, then init wandb logging')
         parser.add_argument('--wandb_project_name', type=str, default='CycleGAN-and-pix2pix', help='specify wandb project name')
+        
+        for arg in PlanetConfig.__dataclass_fields__:
+            arg = PlanetConfig.__dataclass_fields__[arg]
+            parser.add_argument('--' + arg.name, type=arg.type, default=arg.default, help=arg.metadata['help'])
+        
         self.initialized = True
         return parser
 
