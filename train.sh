@@ -44,13 +44,19 @@ else
 fi
 python -m train \
     --checkpoints_dir $output_dir \
-    --batch_size 32 \
+    --batch_size 64 \
     --planet_seed 0 \
     --use_mask_store True \
     --data_dir ./planetAI/data/ \
     --use_wandb \
     --iters 80000 \
     --n_epochs 50 \
+    --display_freq 25000 \
+    --name planet-pix2pix-0 \
+    --size 0 \
+    --input_nc 1 \
+    --output_nc 1 \
+    --wandb_project_name PlanetAI \
 
 
 

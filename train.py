@@ -28,7 +28,15 @@ from planetAI.src.data.map_paster import setup
 from torch.utils.data import DataLoader
 from models import create_model
 from util.visualizer import Visualizer
+import util
+import numpy as np
 from tqdm import tqdm
+import os
+import wandb
+if 'WANDB_API_KEY' in os.environ:
+    wandb.login(key=os.environ['WANDB_API_KEY'])
+else:
+    raise Exception("WANDB_API_KEY not found in environment variables. https://wandb.ai/authorize")
 
 if __name__ == '__main__':
     opt = TrainOptions().parse()   # get training options
