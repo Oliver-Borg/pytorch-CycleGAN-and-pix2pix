@@ -1,12 +1,12 @@
 #!/bin/bash
-#SBATCH --job-name=PlanetAITrain
+#SBATCH --job-name=pix2pix
 #SBATCH --account=a100free
 #SBATCH --partition=a100
 #SBATCH --gres=gpu:a100-2g-10gb:1
 #SBATCH --ntasks=5
 #SBATCH --time=48:00:00  # Time limit (HH:MM:SS)
-#SBATCH --output=slurm/train.out  # Output file
-#SBATCH --error=slurm/train.err  # Error file
+#SBATCH --output=slurm/pix2pix.out  # Output file
+#SBATCH --error=slurm/pix2pix.err  # Error file
 #SBATCH --mail-type=END,FAIL  # Email you when the job finishes or fails
 #SBATCH --mail-user=BRGOLI005@myuct.ac.za # Email address to send to
 
