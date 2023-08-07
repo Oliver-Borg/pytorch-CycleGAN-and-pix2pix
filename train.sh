@@ -52,7 +52,7 @@ python -m train \
     --iters 80000 \
     --n_epochs 50 \
     --display_freq 25000 \
-    --name planet-pix2pix-0 \
+    --name planet-pix2pix-0-global-max \
     --size 0 \
     --input_nc 1 \
     --output_nc 1 \
