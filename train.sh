@@ -57,6 +57,7 @@ python -m train \
     --input_nc 1 \
     --output_nc 1 \
     --wandb_project_name PlanetAI \
+    --bucketing_mode global-max
 
 
 
