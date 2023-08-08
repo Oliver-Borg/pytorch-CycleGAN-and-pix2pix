@@ -26,6 +26,7 @@ from planetAI.src.data.utils import PlanetConfig
 from planetAI.src.data.dataclass_argparser import CustomArgumentParser
 from planetAI.src.data.map_paster import setup
 from torch.utils.data import DataLoader
+import torch
 from models import create_model
 from util.visualizer import Visualizer
 import util
@@ -53,7 +54,8 @@ if __name__ == '__main__':
                 dataset,
                 batch_size=opt.batch_size,
                 shuffle=not opt.serial_batches,
-                num_workers=int(opt.num_threads)
+                num_workers=int(opt.num_threads),
+                generator=torch.Generator().manual_seed(planet_cfg.planet_seed),
             )  # create a dataset given opt.dataset_mode and other options
     dataset_size = len(dataset)    # get the number of images in the dataset.
     print('The number of training images = %d' % dataset_size)
