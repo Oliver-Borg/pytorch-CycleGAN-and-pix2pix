@@ -2,7 +2,7 @@
 #SBATCH --job-name=pix2pix
 #SBATCH --account=a100free
 #SBATCH --partition=a100
-#SBATCH --gres=gpu:a100-2g-10gb:1
+#SBATCH --gres=gpu:a100-1g-5gb:1
 #SBATCH --ntasks=4
 #SBATCH --time=48:00:00  # Time limit (HH:MM:SS)
 #SBATCH --output=slurm/pix2pix.out  # Output file
@@ -43,21 +43,28 @@ else
     output_dir="/mnt/e/brgoli005/planet-pix2pix"
 fi
 python -m train \
+    --name planet-pix2pix-2-randomize \
+    --size 2 \
     --checkpoints_dir $output_dir \
-    --batch_size 64 \
+    --batch_size 16 \
     --planet_seed 0 \
+    --image_mode sketch-to-dem \
     --use_mask_store True \
-    --data_dir ./planetAI/data/ \
+    --data_dir /scratch/brgoli005/data/ \
     --use_wandb \
-    --iters 80000 \
-    --n_epochs 50 \
+    --iters 10000000 \
+    --n_epochs 1 \
     --display_freq 25000 \
-    --name planet-pix2pix-0-global-max \
-    --size 0 \
+    --randomize_steps 100\
+    --on_fly_conditioning True\
+    --on_fly_save True\
+    --extra_rotations True\
+    --gen_lists False \
     --input_nc 1 \
     --output_nc 1 \
     --wandb_project_name PlanetAI \
-    --bucketing_mode global-max
+    --bucketing_mode global-max \
+    --num_threads 4 \
 
 
 
