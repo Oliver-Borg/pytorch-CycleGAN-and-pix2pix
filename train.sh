@@ -43,8 +43,8 @@ else
     output_dir="/mnt/e/brgoli005/planet-pix2pix"
 fi
 python -m train \
-    --name planet-pix2pix-2-randomize \
-    --size 2 \
+    --name planet-pix2pix-1-randomize \
+    --size 1 \
     --checkpoints_dir $output_dir \
     --batch_size 16 \
     --planet_seed 0 \
@@ -65,6 +65,7 @@ python -m train \
     --wandb_project_name PlanetAI \
     --bucketing_mode global-max \
     --num_threads 4 \
+    --continue_train
 
 
 
