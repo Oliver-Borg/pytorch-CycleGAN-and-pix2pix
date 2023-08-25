@@ -181,7 +181,7 @@ class Visualizer():
                 wandb_image = wandb.Image(image_numpy)
                 table_row.append(wandb_image)
                 ims_dict[label] = wandb_image
-            self.wandb_run.log(ims_dict)
+            self.wandb_run.log(ims_dict, commit=False)
             if epoch != self.current_epoch:
                 self.current_epoch = epoch
                 result_table.add_data(*table_row)
@@ -249,8 +249,12 @@ class Visualizer():
             t_data (float) -- data loading time per data point (normalized by batch_size)
         """
         message = '(epoch: %d, iters: %d, time: %.3f, data: %.3f) ' % (epoch, iters, t_comp, t_data)
+        metrics = {}
         for k, v in losses.items():
             message += '%s: %.3f ' % (k, v)
+            metrics[k] = v
+        if self.use_wandb:
+            self.wandb_run.log(metrics)
 
         # print(message)  # print the message
         with open(self.log_name, "a") as log_file:

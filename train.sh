@@ -54,7 +54,7 @@ python -m train \
     --use_wandb \
     --iters 10000000 \
     --n_epochs 1 \
-    --display_freq 25000 \
+    --display_freq 1000 \
     --randomize_steps 1000\
     --on_fly_conditioning True\
     --on_fly_save True\
@@ -64,8 +64,7 @@ python -m train \
     --wandb_project_name PlanetAI \
     --bucketing_mode global-max \
     --num_threads 8 \
-    --continue_train \
-    --conditioning_dropout 0
+    --continue_train 
 
 
 
