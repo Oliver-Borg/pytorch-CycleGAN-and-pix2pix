@@ -6,7 +6,7 @@ import time
 from . import util, html
 from subprocess import Popen, PIPE
 
-
+from planetAI.src.data.map_paster import change_channels
 try:
     import wandb
 except ImportError:
@@ -46,6 +46,7 @@ def save_images(webpage, visuals, image_path, aspect_ratio=1.0, width=256, use_w
         txts.append(label)
         links.append(image_name)
         if use_wandb:
+            im = change_channels(im, 3)
             ims_dict[label] = wandb.Image(im)
     webpage.add_images(ims, txts, links, width=width)
     if use_wandb:
@@ -178,6 +179,7 @@ class Visualizer():
             ims_dict = {}
             for label, image in visuals.items():
                 image_numpy = util.tensor2im(image)
+                image_numpy = change_channels(image_numpy, 3)
                 wandb_image = wandb.Image(image_numpy)
                 table_row.append(wandb_image)
                 ims_dict[label] = wandb_image
