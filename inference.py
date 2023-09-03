@@ -31,7 +31,7 @@ def from_pretrained(base_path: str, model_name: str, input_nc: int=1):
 
 def call(model, data, input_nc: int=1):
     # print("Calling model with data shape", data.shape)
-    input_data = {'A': data[:1, :input_nc, :256, :256], 'B': data[:1, :1, :256, :256], 'A_paths': [''], 'B_paths': ['']}
+    input_data = {'A': data[:, :input_nc, :, :], 'B': data[:, :input_nc, :, :], 'A_paths': [''], 'B_paths': ['']}
     model.set_input(input_data)  # unpack data from data loader
     model.test()           # run inference
     visuals = model.get_current_visuals()  # get image results
