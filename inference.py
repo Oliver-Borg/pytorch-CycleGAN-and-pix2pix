@@ -1,12 +1,12 @@
-from options.train_options import TrainOptions
+from .options.train_options import TrainOptions
 import os
-from models import create_model
+from .models import create_model
 import torch
 import numpy as np
 import PIL.Image as img
 from PIL import Image
 
-def from_pretrained(base_path: str, model_name: str):
+def from_pretrained(base_path: str, model_name: str, input_nc: int=1):
     opt = TrainOptions().parse()  # get test options
     # hard-code some parameters for test
     opt.num_threads = 0   # test code only supports num_threads = 0
@@ -18,18 +18,28 @@ def from_pretrained(base_path: str, model_name: str):
     opt.name = model_name
     opt.phase = 'test'
     opt.isTrain = False
+    opt.input_nc = input_nc
+    if torch.cuda.is_available():
+        opt.gpu_ids = [0]
+    else:
+        opt.gpu_ids = []
     model = create_model(opt)      # create a model given opt.model and other options
     model.setup(opt)               # regular setup: load and print networks; create schedulers
 
     return model
     
 
-def call(model, data):
-    input_data = {'A': data, 'B': data, 'A_paths': [''], 'B_paths': ['']}
+def call(model, data, input_nc: int=1):
+    if data.shape[2] != 256 or data.shape[3] != 256:
+        print("Calling model with data shape", data.shape)
+        print("Resizing data to 256x256")
+    input_data = {'A': data[:, :input_nc, :256, :256], 'B': data[:, :input_nc, :256, :256], 'A_paths': [''], 'B_paths': ['']}
     model.set_input(input_data)  # unpack data from data loader
     model.test()           # run inference
     visuals = model.get_current_visuals()  # get image results
-    return visuals['fake_B']
+    to_return = visuals['fake_B']
+    # print("Returning data shape", to_return.shape)
+    return to_return
 
 if __name__ == '__main__':
     path = '/home/otrolie/.config/blender/3.6/scripts/addons/terrain-ml/models/gans/sketch-to-planet'
